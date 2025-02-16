@@ -1,0 +1,17 @@
+{
+  "welcome": "Hello",
+  "spend_category": {
+    "education": "Education",
+    "shopping": "Tiêu dùng",
+    "entertainment": "Giải trí",
+    "healthy": "Sức khoẻ",
+    "vehicle": "Xe cộ",
+    "services": "Dịch vụ",
+    "investment": "Đầu tư",
+    "salary": "Lương",
+    "saving": "Tiết kiệm",
+    "business": "Kinh doanh",
+    "travel": "Du lịch",
+    "other": "Khác"
+  }
+}
