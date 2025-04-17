@@ -20,21 +20,21 @@ mixin _$AppState {
   TResult when<TResult extends Object?>({
     required TResult Function() checking,
     required TResult Function() unAuthorized,
-    required TResult Function() authorized,
+    required TResult Function(User user) authorized,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? checking,
     TResult? Function()? unAuthorized,
-    TResult? Function()? authorized,
+    TResult? Function(User user)? authorized,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? checking,
     TResult Function()? unAuthorized,
-    TResult Function()? authorized,
+    TResult Function(User user)? authorized,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -119,7 +119,7 @@ class _$AppStateCheckingImpl implements _AppStateChecking {
   TResult when<TResult extends Object?>({
     required TResult Function() checking,
     required TResult Function() unAuthorized,
-    required TResult Function() authorized,
+    required TResult Function(User user) authorized,
   }) {
     return checking();
   }
@@ -129,7 +129,7 @@ class _$AppStateCheckingImpl implements _AppStateChecking {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? checking,
     TResult? Function()? unAuthorized,
-    TResult? Function()? authorized,
+    TResult? Function(User user)? authorized,
   }) {
     return checking?.call();
   }
@@ -139,7 +139,7 @@ class _$AppStateCheckingImpl implements _AppStateChecking {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? checking,
     TResult Function()? unAuthorized,
-    TResult Function()? authorized,
+    TResult Function(User user)? authorized,
     required TResult orElse(),
   }) {
     if (checking != null) {
@@ -228,7 +228,7 @@ class _$AppStateUnAuthorizedImpl implements _AppStateUnAuthorized {
   TResult when<TResult extends Object?>({
     required TResult Function() checking,
     required TResult Function() unAuthorized,
-    required TResult Function() authorized,
+    required TResult Function(User user) authorized,
   }) {
     return unAuthorized();
   }
@@ -238,7 +238,7 @@ class _$AppStateUnAuthorizedImpl implements _AppStateUnAuthorized {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? checking,
     TResult? Function()? unAuthorized,
-    TResult? Function()? authorized,
+    TResult? Function(User user)? authorized,
   }) {
     return unAuthorized?.call();
   }
@@ -248,7 +248,7 @@ class _$AppStateUnAuthorizedImpl implements _AppStateUnAuthorized {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? checking,
     TResult Function()? unAuthorized,
-    TResult Function()? authorized,
+    TResult Function(User user)? authorized,
     required TResult orElse(),
   }) {
     if (unAuthorized != null) {
@@ -301,6 +301,10 @@ abstract class _$$AppStateAuthorizedImplCopyWith<$Res> {
   factory _$$AppStateAuthorizedImplCopyWith(_$AppStateAuthorizedImpl value,
           $Res Function(_$AppStateAuthorizedImpl) then) =
       __$$AppStateAuthorizedImplCopyWithImpl<$Res>;
+  @useResult
+  $Res call({User user});
+
+  $UserCopyWith<$Res> get user;
 }
 
 /// @nodoc
@@ -310,35 +314,68 @@ class __$$AppStateAuthorizedImplCopyWithImpl<$Res>
   __$$AppStateAuthorizedImplCopyWithImpl(_$AppStateAuthorizedImpl _value,
       $Res Function(_$AppStateAuthorizedImpl) _then)
       : super(_value, _then);
+
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? user = null,
+  }) {
+    return _then(_$AppStateAuthorizedImpl(
+      user: null == user
+          ? _value.user
+          : user // ignore: cast_nullable_to_non_nullable
+              as User,
+    ));
+  }
+
+  @override
+  @pragma('vm:prefer-inline')
+  $UserCopyWith<$Res> get user {
+    return $UserCopyWith<$Res>(_value.user, (value) {
+      return _then(_value.copyWith(user: value));
+    });
+  }
 }
 
 /// @nodoc
 
 class _$AppStateAuthorizedImpl implements _AppStateAuthorized {
-  _$AppStateAuthorizedImpl();
+  _$AppStateAuthorizedImpl({required this.user});
+
+  @override
+  final User user;
 
   @override
   String toString() {
-    return 'AppState.authorized()';
+    return 'AppState.authorized(user: $user)';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$AppStateAuthorizedImpl);
+        (other.runtimeType == runtimeType &&
+            other is _$AppStateAuthorizedImpl &&
+            (identical(other.user, user) || other.user == user));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode => Object.hash(runtimeType, user);
+
+  @JsonKey(ignore: true)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$AppStateAuthorizedImplCopyWith<_$AppStateAuthorizedImpl> get copyWith =>
+      __$$AppStateAuthorizedImplCopyWithImpl<_$AppStateAuthorizedImpl>(
+          this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() checking,
     required TResult Function() unAuthorized,
-    required TResult Function() authorized,
+    required TResult Function(User user) authorized,
   }) {
-    return authorized();
+    return authorized(user);
   }
 
   @override
@@ -346,9 +383,9 @@ class _$AppStateAuthorizedImpl implements _AppStateAuthorized {
   TResult? whenOrNull<TResult extends Object?>({
     TResult? Function()? checking,
     TResult? Function()? unAuthorized,
-    TResult? Function()? authorized,
+    TResult? Function(User user)? authorized,
   }) {
-    return authorized?.call();
+    return authorized?.call(user);
   }
 
   @override
@@ -356,11 +393,11 @@ class _$AppStateAuthorizedImpl implements _AppStateAuthorized {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? checking,
     TResult Function()? unAuthorized,
-    TResult Function()? authorized,
+    TResult Function(User user)? authorized,
     required TResult orElse(),
   }) {
     if (authorized != null) {
-      return authorized();
+      return authorized(user);
     }
     return orElse();
   }
@@ -401,5 +438,11 @@ class _$AppStateAuthorizedImpl implements _AppStateAuthorized {
 }
 
 abstract class _AppStateAuthorized implements AppState {
-  factory _AppStateAuthorized() = _$AppStateAuthorizedImpl;
+  factory _AppStateAuthorized({required final User user}) =
+      _$AppStateAuthorizedImpl;
+
+  User get user;
+  @JsonKey(ignore: true)
+  _$$AppStateAuthorizedImplCopyWith<_$AppStateAuthorizedImpl> get copyWith =>
+      throw _privateConstructorUsedError;
 }

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoe_store/localization/localizations.dart';
+import 'package:shoe_store/routes.dart';
 import 'package:shoe_store/shared/cubits/login_cubit/login_cubit.dart';
-import 'package:shoe_store/shared/cubits/login_cubit/states.dart';
+import 'package:shoe_store/shared/cubits/login_cubit/login_state.dart';
+import 'package:shoe_store/shared/cubits/signup_cubit/signup_cubit.dart';
+import 'package:shoe_store/shared/cubits/signup_cubit/signup_state.dart';
 import 'package:shoe_store/shared/extensions/build_context_extension.dart';
 import 'package:shoe_store/shared/utils/validate_form.dart';
 import 'package:shoe_store/shared/widgets/app_text.dart';
@@ -19,6 +22,9 @@ class SignUpForm extends StatefulWidget {
 class _SignUpFormState extends State<SignUpForm> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController passwordController = TextEditingController();
+
+
+  
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -51,7 +57,7 @@ class _SignUpFormState extends State<SignUpForm> {
                           return Validation.validateEmail(value);
                         },
                         onChanged: (value) {
-                          context.read<LoginCubit>().emailChanged(value);
+                          context.read<SignupCubit>().emailChanged(value);
                         },
                         fillColor: context.colors.ligthGrey,
                         hintText: 'login.input_email'.tr(),
@@ -73,7 +79,7 @@ class _SignUpFormState extends State<SignUpForm> {
                           return Validation.validateUserName(value);
                         },
                         onChanged: (value) {
-                          context.read<LoginCubit>().userNameChanged(value);
+                          context.read<SignupCubit>().userNameChanged(value);
                         },
                       ),
                       SizedBox(
@@ -89,11 +95,12 @@ class _SignUpFormState extends State<SignUpForm> {
                       AppTextFormField(
                         hintText: 'login.input_password'.tr(),
                         autovalidateMode: AutovalidateMode.disabled,
+                        controller: passwordController,
                         validator: (value) {
                           return Validation.validatePass(value);
                         },
                         onChanged: (value) {
-                          context.read<LoginCubit>().emailChanged(value);
+                          context.read<SignupCubit>().passwordChanged(value);
                         },
                         fillColor: context.colors.ligthGrey,
                       ),
@@ -114,7 +121,7 @@ class _SignUpFormState extends State<SignUpForm> {
                               value, passwordController.text);
                         },
                         onChanged: (value) {
-                          context.read<LoginCubit>().rePassChanged(value);
+                          context.read<SignupCubit>().rePassChanged(value);
                         },
                       ),
                     ],
@@ -125,21 +132,28 @@ class _SignUpFormState extends State<SignUpForm> {
             SizedBox(
               height: 35,
             ),
-            BlocBuilder<LoginCubit, LoginState>(builder: (context, state) {
+            BlocListener<SignupCubit, SignupState>(
+            listener: (context, state) {
+              if (state.signupSuccess) {
+                Navigator.pushNamed(context, RouteName.login);
+              }
+            },
+            child:
+            BlocBuilder<SignupCubit, SignupState>(builder: (context, state) {
               return AppButton(
                 label: 'signup.title'.tr(),
-                onPressed: state.valid
+                onPressed: state.isValid
                     ? () {
                         var valid = _formKey.currentState!.validate();
                         if (!valid) {
-                          return;
+                          context.read<SignupCubit>().register();
                         }
                       }
                     : null,
                 textStyle: const TextStyle(fontSize: 18, color: Colors.black),
                 primaryColor: context.colors.onlineColor,
               );
-            }),
+            }),),
           ],
         ));
   }

@@ -1,7 +1,9 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 const String _tokenKey = 'family_4_0_app.access_token';
-const String _releaseLocationPermissionKey = 'family_4_0_app.release_location_permission';
+const String _refreshTokenKey = 'family_4_0_app.refresh_token';
+const String _releaseLocationPermissionKey =
+    'family_4_0_app.release_location_permission';
 
 class AppProvider {
   final SharedPreferences _preferences;
@@ -14,11 +16,21 @@ class AppProvider {
     return _accessToken ?? _preferences.getString(_tokenKey);
   }
 
+  String? _refreshToken;
+  String? get refreshToken {
+    return _refreshToken ?? _preferences.getString(_refreshTokenKey);
+  }
+
   bool get hasAccessToken => accessToken?.isNotEmpty ?? false;
 
   Future<void> setAccessToken(String? value) async {
     _accessToken = value;
     await _preferences.setString(_tokenKey, value ?? '');
+  }
+
+  Future<void> setRefreshToken(String? value) async {
+    _refreshToken = value;
+    await _preferences.setString(_refreshTokenKey, value ?? '');
   }
 
   bool get isReleaseLocationPermission {

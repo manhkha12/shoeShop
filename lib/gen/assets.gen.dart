@@ -175,6 +175,8 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/shoe_shop.svg
   SvgGenImage get shoe_shop => const SvgGenImage('assets/icons/shoe_shop.svg');
+   /// File path: assets/icons/search.svg
+  SvgGenImage get search => const SvgGenImage('assets/icons/search.svg');
 
   /// File path: assets/icons/apple.svg
   SvgGenImage get apple => const SvgGenImage('assets/icons/apple.svg');
@@ -185,6 +187,22 @@ class $AssetsIconsGen {
   /// File path: assets/icons/stateError.svg
   SvgGenImage get stateError =>
       const SvgGenImage('assets/icons/stateError.svg');
+      /// File path: assets/icons/language.svg
+  SvgGenImage get language =>
+      const SvgGenImage('assets/icons/language.svg');
+      /// File path: assets/icons/dartmode.svg
+  SvgGenImage get darkMode =>
+      const SvgGenImage('assets/icons/darkmode.svg');
+      /// File path: assets/icons/lightmode.svg
+  SvgGenImage get lightMode =>
+      const SvgGenImage('assets/icons/lightmode.svg');
+
+      /// File path: assets/icons/profile.svg
+  SvgGenImage get profile =>
+      const SvgGenImage('assets/icons/profile.svg');
+      /// File path: assets/icons/lightmode.svg
+  SvgGenImage get lock =>
+      const SvgGenImage('assets/icons/lock.svg');
 
   /// List of all assets
   List<SvgGenImage> get values => [
@@ -204,6 +222,7 @@ class $AssetsIconsGen {
         stateError,
         google,
         apple,
+        search,
         chef,
         cheveronRight,
         clockFill,
@@ -211,6 +230,9 @@ class $AssetsIconsGen {
         dropdown,
         education,
         entertainment,
+        language,
+        darkMode,
+        lightMode,
         filter,
         food,
         shoe_shop,
@@ -278,6 +300,9 @@ class $AssetsImagesGen {
   /// File path: assets/images/user.png
   AssetGenImage get user => const AssetGenImage('assets/images/user.png');
 
+  /// File path: assets/images/lock.png
+  AssetGenImage get lock => const AssetGenImage('assets/images/lock.png');
+
   /// List of all assets
   List<dynamic> get values => [
         card1,
@@ -289,6 +314,7 @@ class $AssetsImagesGen {
         invest,
         sharing,
         todo,
+        lock,
         user,
         shoe_background
       ];
