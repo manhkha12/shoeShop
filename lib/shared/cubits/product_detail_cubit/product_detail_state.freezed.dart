@@ -18,6 +18,7 @@ final _privateConstructorUsedError = UnsupportedError(
 mixin _$ProductDetailState {
   bool get isLoading => throw _privateConstructorUsedError;
   List<Detail> get productDetail => throw _privateConstructorUsedError;
+  bool get isSuccess => throw _privateConstructorUsedError;
   String? get errorMessage => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
@@ -31,7 +32,11 @@ abstract class $ProductDetailStateCopyWith<$Res> {
           ProductDetailState value, $Res Function(ProductDetailState) then) =
       _$ProductDetailStateCopyWithImpl<$Res, ProductDetailState>;
   @useResult
-  $Res call({bool isLoading, List<Detail> productDetail, String? errorMessage});
+  $Res call(
+      {bool isLoading,
+      List<Detail> productDetail,
+      bool isSuccess,
+      String? errorMessage});
 }
 
 /// @nodoc
@@ -49,6 +54,7 @@ class _$ProductDetailStateCopyWithImpl<$Res, $Val extends ProductDetailState>
   $Res call({
     Object? isLoading = null,
     Object? productDetail = null,
+    Object? isSuccess = null,
     Object? errorMessage = freezed,
   }) {
     return _then(_value.copyWith(
@@ -60,6 +66,10 @@ class _$ProductDetailStateCopyWithImpl<$Res, $Val extends ProductDetailState>
           ? _value.productDetail
           : productDetail // ignore: cast_nullable_to_non_nullable
               as List<Detail>,
+      isSuccess: null == isSuccess
+          ? _value.isSuccess
+          : isSuccess // ignore: cast_nullable_to_non_nullable
+              as bool,
       errorMessage: freezed == errorMessage
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
@@ -76,7 +86,11 @@ abstract class _$$ProductDetailStateImplCopyWith<$Res>
       __$$ProductDetailStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({bool isLoading, List<Detail> productDetail, String? errorMessage});
+  $Res call(
+      {bool isLoading,
+      List<Detail> productDetail,
+      bool isSuccess,
+      String? errorMessage});
 }
 
 /// @nodoc
@@ -92,6 +106,7 @@ class __$$ProductDetailStateImplCopyWithImpl<$Res>
   $Res call({
     Object? isLoading = null,
     Object? productDetail = null,
+    Object? isSuccess = null,
     Object? errorMessage = freezed,
   }) {
     return _then(_$ProductDetailStateImpl(
@@ -103,6 +118,10 @@ class __$$ProductDetailStateImplCopyWithImpl<$Res>
           ? _value._productDetail
           : productDetail // ignore: cast_nullable_to_non_nullable
               as List<Detail>,
+      isSuccess: null == isSuccess
+          ? _value.isSuccess
+          : isSuccess // ignore: cast_nullable_to_non_nullable
+              as bool,
       errorMessage: freezed == errorMessage
           ? _value.errorMessage
           : errorMessage // ignore: cast_nullable_to_non_nullable
@@ -117,6 +136,7 @@ class _$ProductDetailStateImpl implements _ProductDetailState {
   _$ProductDetailStateImpl(
       {this.isLoading = false,
       final List<Detail> productDetail = const [],
+      this.isSuccess = false,
       this.errorMessage})
       : _productDetail = productDetail;
 
@@ -133,11 +153,14 @@ class _$ProductDetailStateImpl implements _ProductDetailState {
   }
 
   @override
+  @JsonKey()
+  final bool isSuccess;
+  @override
   final String? errorMessage;
 
   @override
   String toString() {
-    return 'ProductDetailState(isLoading: $isLoading, productDetail: $productDetail, errorMessage: $errorMessage)';
+    return 'ProductDetailState(isLoading: $isLoading, productDetail: $productDetail, isSuccess: $isSuccess, errorMessage: $errorMessage)';
   }
 
   @override
@@ -149,13 +172,19 @@ class _$ProductDetailStateImpl implements _ProductDetailState {
                 other.isLoading == isLoading) &&
             const DeepCollectionEquality()
                 .equals(other._productDetail, _productDetail) &&
+            (identical(other.isSuccess, isSuccess) ||
+                other.isSuccess == isSuccess) &&
             (identical(other.errorMessage, errorMessage) ||
                 other.errorMessage == errorMessage));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, isLoading,
-      const DeepCollectionEquality().hash(_productDetail), errorMessage);
+  int get hashCode => Object.hash(
+      runtimeType,
+      isLoading,
+      const DeepCollectionEquality().hash(_productDetail),
+      isSuccess,
+      errorMessage);
 
   @JsonKey(ignore: true)
   @override
@@ -169,12 +198,15 @@ abstract class _ProductDetailState implements ProductDetailState {
   factory _ProductDetailState(
       {final bool isLoading,
       final List<Detail> productDetail,
+      final bool isSuccess,
       final String? errorMessage}) = _$ProductDetailStateImpl;
 
   @override
   bool get isLoading;
   @override
   List<Detail> get productDetail;
+  @override
+  bool get isSuccess;
   @override
   String? get errorMessage;
   @override

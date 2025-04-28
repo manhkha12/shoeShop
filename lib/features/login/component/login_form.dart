@@ -96,7 +96,7 @@ class _LoginFormState extends State<LoginForm> {
             height: 20,
           ),
           BlocListener<LoginCubit, LoginState>(
-            listener: (context, state) {
+            listener: (_, state) {
               print("Login Success State: ${state.loginSuccess}");
               if (state.loginSuccess) {
                 if (state.userRole == "admin") {

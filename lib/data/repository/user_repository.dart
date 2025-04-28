@@ -1,3 +1,4 @@
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shoe_store/data/local/app_provider.dart';
 import 'package:shoe_store/data/remote/user_api.dart';
 import 'package:shoe_store/data/repository/api_service.dart';
@@ -11,7 +12,7 @@ class UserRepository {
   UserRepository(this.apiService, this.appProvider);
 
   Future<User> login(String email, String password) async {
-    print('[AuthService] 🔄 Đang thực hiện đăng nhập với email: $email');
+    // print('[AuthService] 🔄 Đang thực hiện đăng nhập với email: $email');
 
     try {
       final resp = await apiService.postRequest("auth/login", {
@@ -29,15 +30,19 @@ class UserRepository {
 
         // Trả về user, kiểm tra null trước khi truy cập
         final user = User.fromJson(resp['data']['user'] ?? {});
-        print('[AuthService] ✅ Đối tượng user đã được tạo: ${user.email}');
+        print('[AuthService] ✅ Đối tượng user đã được tạo: ${user.id}');
+        // Lưu user_id vào SharedPreferences
+        // await appProvider.setUser(user);
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setInt('user_id', user.id);
         return user;
       } else {
-        print(
-            '[AuthService] ❌ Đăng nhập thất bại: Không có phản hồi từ server');
+        // print(
+        //     '[AuthService] ❌ Đăng nhập thất bại: Không có phản hồi từ server');
         throw Exception("Đăng nhập thất bại");
       }
     } catch (e) {
-      print('[AuthService] ❌ Lỗi khi đăng nhập: $e');
+      // print('[AuthService] ❌ Lỗi khi đăng nhập: $e');
       throw Exception("Đăng nhập thất bại: $e");
     }
   }
@@ -58,13 +63,16 @@ class UserRepository {
     }
   }
 
-  Future<User> authToken() async {
-    final resp = await apiService.authToken(refreshToken!);
-    await updateToken(resp!['data']);
-    return User.fromJson(resp['data']['user']);
-  }
+Future<User> authToken() async {
+  // print('[UserRepo] 🔐 Đang xác thực lại bằng refresh token: ${refreshToken}');
+  final resp = await apiService.authToken(refreshToken!);
+  await updateToken(resp!['data']);
+  // print('[UserRepo] ✅ Refresh token hợp lệ. Đăng nhập lại thành công');
+  return User.fromJson(resp['data']['user']);
+}
 
   Future<void> logout() async {
+
     await appProvider.setAccessToken(null);
     await appProvider.setRefreshToken(null);
   }
@@ -72,9 +80,10 @@ class UserRepository {
   Future<void> updateToken(Map<String, dynamic> response) async {
     await appProvider.setAccessToken(response['token']);
     // Nếu có refresh_token thì lưu luôn, giả sử server có trả
-    if (response.containsKey('refresh_token')) {
-      await appProvider.setRefreshToken(response['refresh_token']);
+    if (response.containsKey('refreshToken')) {
+      await appProvider.setRefreshToken(response['refreshToken']);
     }
+
   }
 
   bool get hasAccessToken => appProvider.hasAccessToken;

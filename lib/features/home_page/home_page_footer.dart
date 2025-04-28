@@ -93,7 +93,7 @@ class _HomePageFooterState extends State<HomePageFooter> {
                   } else if (state.errorMessage != null) {
                     // Hiển thị thông báo lỗi nếu có
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: AppText(state.errorMessage!)),
+                      SnackBar(content: AppText(state.errorMessage!),backgroundColor: context.colors.onlineColor,),
                     );
                   } else if (state.searchResults.isNotEmpty) {
                     // Xử lý kết quả tìm kiếm nếu có

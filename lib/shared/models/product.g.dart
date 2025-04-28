@@ -11,6 +11,7 @@ _$ProductImpl _$$ProductImplFromJson(Map<String, dynamic> json) =>
       id: json['product_id'] as String,
       name: json['name'] as String,
       price: json['price'] as String,
+      stock: json['stock'] as String?,
       imageUrl: json['image'] as String?,
     );
 
@@ -19,5 +20,6 @@ Map<String, dynamic> _$$ProductImplToJson(_$ProductImpl instance) =>
       'product_id': instance.id,
       'name': instance.name,
       'price': instance.price,
+      'stock': instance.stock,
       'image': instance.imageUrl,
     };

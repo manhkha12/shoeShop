@@ -9,6 +9,7 @@ class ProductDetailState with _$ProductDetailState {
   factory ProductDetailState({
     @Default(false) bool isLoading,
     @Default([]) List<Detail> productDetail,
+    @Default(false) bool isSuccess,
     String? errorMessage,
   }) = _ProductDetailState;
 }

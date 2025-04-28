@@ -175,7 +175,8 @@ class $AssetsIconsGen {
 
   /// File path: assets/icons/shoe_shop.svg
   SvgGenImage get shoe_shop => const SvgGenImage('assets/icons/shoe_shop.svg');
-   /// File path: assets/icons/search.svg
+
+  /// File path: assets/icons/search.svg
   SvgGenImage get search => const SvgGenImage('assets/icons/search.svg');
 
   /// File path: assets/icons/apple.svg
@@ -187,22 +188,30 @@ class $AssetsIconsGen {
   /// File path: assets/icons/stateError.svg
   SvgGenImage get stateError =>
       const SvgGenImage('assets/icons/stateError.svg');
-      /// File path: assets/icons/language.svg
-  SvgGenImage get language =>
-      const SvgGenImage('assets/icons/language.svg');
-      /// File path: assets/icons/dartmode.svg
-  SvgGenImage get darkMode =>
-      const SvgGenImage('assets/icons/darkmode.svg');
-      /// File path: assets/icons/lightmode.svg
-  SvgGenImage get lightMode =>
-      const SvgGenImage('assets/icons/lightmode.svg');
 
-      /// File path: assets/icons/profile.svg
-  SvgGenImage get profile =>
-      const SvgGenImage('assets/icons/profile.svg');
-      /// File path: assets/icons/lightmode.svg
-  SvgGenImage get lock =>
-      const SvgGenImage('assets/icons/lock.svg');
+  /// File path: assets/icons/language.svg
+  SvgGenImage get language => const SvgGenImage('assets/icons/language.svg');
+
+  /// File path: assets/icons/dartmode.svg
+  SvgGenImage get darkMode => const SvgGenImage('assets/icons/darkmode.svg');
+
+  /// File path: assets/icons/lightmode.svg
+  SvgGenImage get lightMode => const SvgGenImage('assets/icons/lightmode.svg');
+
+  /// File path: assets/icons/profile.svg
+  SvgGenImage get profile => const SvgGenImage('assets/icons/profile.svg');
+
+  /// File path: assets/icons/cart.svg
+  SvgGenImage get cart => const SvgGenImage('assets/icons/cart.svg');
+
+  /// File path: assets/icons/lightmode.svg
+  SvgGenImage get lock => const SvgGenImage('assets/icons/lock.svg');
+
+  /// File path: assets/icons/minus.svg
+  SvgGenImage get minus => const SvgGenImage('assets/icons/minus.svg');
+
+  /// File path: assets/icons/tick.svg
+  SvgGenImage get tick => const SvgGenImage('assets/icons/tick.svg');
 
   /// List of all assets
   List<SvgGenImage> get values => [
@@ -211,11 +220,14 @@ class $AssetsIconsGen {
         alarm,
         alarmPlay,
         arrowDown,
+        tick,
+        minus,
         arrowLeft,
         arrowRight,
         back,
         bell,
         burn,
+        cart,
         calendar,
         cancel,
         chart,
