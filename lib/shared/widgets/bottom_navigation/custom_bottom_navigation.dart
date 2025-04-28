@@ -72,7 +72,8 @@ class BottomNavigation extends StatefulWidget {
   BottomNavigationState createState() => BottomNavigationState();
 }
 
-class BottomNavigationState extends State<BottomNavigation> with SingleTickerProviderStateMixin {
+class BottomNavigationState extends State<BottomNavigation>
+    with SingleTickerProviderStateMixin {
   int selectedIndex = 0;
   late final BottomNavigationController _controller;
 
@@ -140,7 +141,6 @@ class BottomNavigationState extends State<BottomNavigation> with SingleTickerPro
                     changeToTab(1);
                   },
                 ),
-                const SizedBox(width: 60),
                 _TabIcon(
                   icon: items[2].icon,
                   activeColor: widget.activeColor,
@@ -160,36 +160,6 @@ class BottomNavigationState extends State<BottomNavigation> with SingleTickerPro
                   },
                 )
               ],
-            ),
-            Positioned(
-              top: -16,
-              left: 0,
-              right: 0,
-              child: Container(
-                decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.white,
-                ),
-                child: Container(
-                  width: 60,
-                  height: 60,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: LinearGradient(
-                      colors: [
-                        const Color(0xffFBB700),
-                        const Color(0xffDDA100).withOpacity(0.5),
-                        const Color(0xffFBB700)
-                      ],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                    ),
-                  ),
-                  child: Center(
-                    child: Assets.icons.plus.svg(),
-                  ),
-                ),
-              ),
             ),
           ],
         ),
@@ -241,7 +211,9 @@ class _TabIcon extends StatelessWidget {
                     icon,
                     width: 20,
                     height: 20,
-                    colorFilter: isSelected ? activeColor.colorFilter : inActiveColor.colorFilter,
+                    colorFilter: isSelected
+                        ? activeColor.colorFilter
+                        : inActiveColor.colorFilter,
                     fit: BoxFit.contain,
                   ),
                 ),

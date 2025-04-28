@@ -1,4 +1,5 @@
 import 'package:shoe_store/app_config.dart';
+import 'package:shoe_store/data/local/app_provider.dart';
 import 'package:shoe_store/shared/cubits/app_cubit/app_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';

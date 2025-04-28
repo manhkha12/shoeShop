@@ -1,36 +1,51 @@
-import 'package:shoe_store/shared/cubits/login_cubit/states.dart';
+import 'package:shoe_store/data/repository/repositories.dart';
+import 'package:shoe_store/shared/cubits/app_cubit/app_cubit.dart';
+import 'package:shoe_store/shared/cubits/login_cubit/login_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginCubit extends Cubit<LoginState> {
-  LoginCubit({required bool isSignup}) : super(LoginState(isSignUp: isSignup));
+  final UserRepository userRepository;
+  final AppCubit appCubit;
+  LoginCubit({required this.userRepository, required this.appCubit})
+      : super(LoginState());
 
   void emailChanged(String email) {
-    emit(state.copyWith(
-      email: email,
-    ));
+    emit(state.copyWith(email: email));
   }
 
   void passwordChanged(String password) {
-    emit(state.copyWith(
-      password: password,
-    ));
+    emit(state.copyWith(password: password));
   }
 
-  void userNameChanged(String userName) {
-    emit(state.copyWith(
-      userName: userName,
-    ));
+  // 🔥 Đăng nhập
+  Future<void> login() async {
+  if (!state.valid) {
+    print('[LoginCubit] ❌ Email hoặc mật khẩu không hợp lệ');
+    return;
   }
 
-  void rePassChanged(String rePass) {
-    emit(state.copyWith(
-      rePass: rePass,
-    ));
-  }
+  emit(state.copyWith(isLoading: true));
+  print('[LoginCubit] 🔄 Đang đăng nhập với email: ${state.email}');
 
-  void setSignUpMode(bool isSignUp) {
+  try {
+    final user = await userRepository.login(state.email, state.password);
+    print('[LoginCubit] ✅ Đăng nhập thành công: ${user.email} (${user.role})');
+
+    appCubit.authorized(user);
     emit(state.copyWith(
-      isSignUp: isSignUp,
+      loginSuccess: true,
+      isLoading: false,
+      user: user,
+      userRole: user.role,
+    ));
+  } catch (e) {
+    print('[LoginCubit] ❌ Đăng nhập thất bại: $e');
+    emit(state.copyWith(
+      errorMessage: e.toString(),
+      isLoading: false,
     ));
   }
+}
+
+  // 🔥 Đăng ký
 }

@@ -57,8 +57,11 @@
     }
   },
   "home": {
-    "spend_money_manage": "Quản lý chi tiêu",
-    "wallet":"Ví",
+    "home_appbar":"Trang Chủ",
+    "type_shoe":"Kiểu giày bạn muốn mua hôm nay?",
+    "populor":"Thịnh hành",
+    "search":"Tìm kiếm",
+    "view_all":"Xem tất cả",
     "today_food": "Món ngon hôm nay",
     "note": "Ghi chú",
     "btn_see_more": "Xem thêm",
@@ -85,5 +88,18 @@
     "recommend_food_setting":"Cài đặt gợi ý món ăn",
     "rating_app":"Đánh giá ứng dụng",
     "share_app":"Chia sẻ ứng dụng"
+  },
+  "settings":{
+    "title":"Cài đặt",
+    "account":"Tài khoản",
+    "profile":"Hồ sơ cá nhân",
+    "pass_and_security":"Mật khẩu và bảo mật",
+    "language":"Ngôn ngữ",
+    "theme":"Chủ đề",
+    "notification":"Cai dat thông báo",
+    "dark_mode":"Chế độ tối",
+    "light_mode":"Chế độ sáng",
+    "logout":"Đăng xuất"
   }
+
 }

@@ -53,6 +53,8 @@ abstract class ColorTheme {
 
   Color onlineColor = const Color(0xff08BA26);
 
+  Color offlineColor = const Color(0xffB2B0B0);
+
   Color textWhiteGrey = const Color(0xffD2D2D2);
 
   Color circleBarBackground = const Color(0xffE7E7E7);
@@ -70,7 +72,7 @@ abstract class ColorTheme {
   Color lightPink = const Color(0xffFFE5F2);
 
   Color black = const Color(0xF0000000);
-
+Color white = Color.fromARGB(239, 251, 251, 251);
   Color dimGrey = const Color(0xffD9D9D9).withOpacity(0.2);
 }
 
