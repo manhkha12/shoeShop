@@ -7,7 +7,6 @@ import 'package:shoe_store/gen/assets.gen.dart';
 import 'package:shoe_store/localization/localizations.dart';
 import 'package:shoe_store/shared/extensions/build_context_extension.dart';
 import 'package:shoe_store/shared/extensions/extensions.dart';
-import 'package:shoe_store/shared/widgets/app_layout.dart';
 import 'package:shoe_store/shared/widgets/app_text.dart';
 
 class HomePageHeader extends StatelessWidget {

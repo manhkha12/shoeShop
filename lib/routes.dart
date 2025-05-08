@@ -11,6 +11,7 @@ import 'package:shoe_store/features/intro/story_book.dart';
 import 'package:shoe_store/features/login/login_screen.dart';
 
 import 'package:shoe_store/features/main_screen.dart';
+import 'package:shoe_store/features/order/oder_screen.dart';
 import 'package:shoe_store/features/peoduct_detail/product_detail.dart';
 import 'package:shoe_store/features/search_reasults/search_results.dart';
 import 'package:shoe_store/features/setting/component/user_update_info.dart';
@@ -41,6 +42,7 @@ class RouteName {
   static const String userUpdateInfo = '/user_update_info';
   static const String cartDetail = '/cart_detail';
   static const String adminDashboard = '/adminDashboard';
+  static const String orderScreen = '/order_screen';
   static const String homePage = '/home_page';
   // static const String mainTuLam ='/mainTuLam';
 }
@@ -59,6 +61,14 @@ RouteFactory onGenerateRoutes() {
         builder: (context) => const StoryBookScreen(),
       );
     }
+
+    if (settings.name == RouteName.orderScreen) {
+      return MaterialPageRoute(
+        settings: settings,
+        builder: (context) => const OrderScreen(),
+      );
+    }
+
     if (settings.name == RouteName.cartDetail) {
       return MaterialPageRoute(
         settings: settings,

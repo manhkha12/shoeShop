@@ -266,9 +266,11 @@ class _BottomSheetContentState extends State<BottomSheetContent> {
 }
 
 class QuantityProduct extends StatefulWidget {
+  final bool isMinus;
+  final bool isPlus;
   final ValueChanged<int> onQuantityChanged;
   final int initialQuantity;
-  const QuantityProduct({super.key, required this.onQuantityChanged, this.initialQuantity = 1});
+  const QuantityProduct({super.key, required this.onQuantityChanged, this.initialQuantity = 1, this.isMinus = true, this.isPlus = true});
 
   @override
   State<QuantityProduct> createState() => _QuantityProductState();
@@ -308,11 +310,11 @@ class _QuantityProductState extends State<QuantityProduct> {
                   _updateQuantity();
                 });
               },
-              child: Assets.icons.minus.svg(
+              child:widget.isMinus? Assets.icons.minus.svg(
                 color: context.colors.black,
                 width: 16,
                 height: 16,
-              ),
+              ):null,
             ),
             SizedBox(
               width: 5,
@@ -331,11 +333,11 @@ class _QuantityProductState extends State<QuantityProduct> {
                   _updateQuantity();
                 });
               },
-              child: Assets.icons.plus.svg(
+              child:widget.isPlus? Assets.icons.plus.svg(
                 color: context.colors.black.withOpacity(0.7),
                 width: 14,
                 height: 14,
-              ),
+              ): null,
             )
           ],
         ),

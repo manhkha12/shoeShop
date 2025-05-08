@@ -217,6 +217,48 @@ class ApiService {
     }
   }
 
+  Future<void> deleteCartItem(String? cartId) async {
+    try {
+      final response = await http.delete(
+        Uri.parse("$baseUrl/cart/$cartId"),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      );
+      if (response.statusCode == 200) {
+        print("✅ [ApiService] Xóa sản phẩm khỏi giỏ hàng thành công!");
+      } else {
+        print(
+            "❌ [ApiService] Lỗi khi xóa sản phẩm khỏi giỏ hàng, mã trạng thái: ${response.statusCode}");
+      }
+    } catch (e) {
+      print("🚨 [ApiService] Lỗi khi gọi API: $e");
+    }
+  }
+
+  Future<void> updateCartItem(
+      String? cartId, int quan) async {
+    try {
+      final response = await http.put(
+        Uri.parse("$baseUrl/cart/$cartId"),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: {
+          'quantity': quan,
+        },
+      );
+      if (response.statusCode == 200) {
+        print("✅ [ApiService] Cập nhật sản phẩm trong giỏ hàng thành công!");
+      } else {
+        print(
+            "❌ [ApiService] Lỗi khi cập nhật sản phẩm trong giỏ hàng, mã trạng thái: ${response.statusCode}");
+      }
+    } catch (e) {
+      print("🚨 [ApiService] Lỗi khi gọi API: $e");
+    }
+  }
+
   Future<List<Map<String, dynamic>>?> getCart(String? userId) async {
     print(
         "🛒 [ApiService] Gửi request đến API để lấy giỏ hàng cho userId: $userId");
