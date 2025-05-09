@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shoe_store/data/repository/cart_repository.dart';
 import 'package:shoe_store/features/cart/cubit/cart_state.dart';
+import 'package:shoe_store/shared/models/cart_item.dart';
 
 class CartCubit extends Cubit<CartState> {
   CartRepository cartRepository;
@@ -12,9 +13,8 @@ class CartCubit extends Cubit<CartState> {
     try {
       await cartRepository.deleteCartItem(id);
       print("✅ [CartCubit] Đã xóa sản phẩm khỏi giỏ hàng với cartId: $id");
-      final updatedItems = state.cartItems
-          .where((item) => item.cartId != id)
-          .toList();
+      final updatedItems =
+          state.cartItems.where((item) => item.cartId != id).toList();
       emit(state.copyWith(cartItems: updatedItems, isLoading: false));
     } catch (e) {
       print("🚨 [CartCubit] Lỗi khi xóa sản phẩm khỏi giỏ hàng: $e");
@@ -22,7 +22,7 @@ class CartCubit extends Cubit<CartState> {
     }
   }
 
-  Future<void> updateCartItem(String? id,int quan) async {
+  Future<void> updateCartItem(String? id, int quan) async {
     print("🛒 [CartCubit] Đang cập nhật sản phẩm với cartId: $id");
     emit(state.copyWith(isLoading: true));
     try {
@@ -46,7 +46,6 @@ class CartCubit extends Cubit<CartState> {
           cartItems: cartItems,
           isLoading: false,
           cartSuccess: true,
-          
         ));
       } else {
         print("❌ [CartCubit] Không nhận được giỏ hàng từ repository");
@@ -57,34 +56,49 @@ class CartCubit extends Cubit<CartState> {
       emit(state.copyWith(isLoading: false, cartSuccess: false));
     }
   }
+
   void calculateTotalPrice(List<bool> selectedItems) {
-  final cartItems = state.cartItems;
-  double sum = 0;
-  for (int i = 0; i < selectedItems.length; i++) {
-    if (selectedItems[i]) {
-      double price = 0;
-      try {
-        price = double.tryParse(cartItems[i].price ?? '0') ?? 0;
-      } catch (e) {
-        price = 0;
+    final cartItems = state.cartItems;
+    double sum = 0;
+    for (int i = 0; i < selectedItems.length; i++) {
+      if (selectedItems[i]) {
+        double price = 0;
+        try {
+          price = double.tryParse(cartItems[i].price ?? '0') ?? 0;
+        } catch (e) {
+          price = 0;
+        }
+        sum += price * (cartItems[i].quantity ?? 1);
       }
-      sum += price * (cartItems[i].quantity ?? 1);
     }
+    emit(state.copyWith(totalPrice: sum));
   }
-  emit(state.copyWith(totalPrice: sum));
-}
-void updateQuantity(String? itemId, int newQuantity) {
-  final updatedItems = state.cartItems.map((item) {
-    if (item.cartId == itemId) {
-      return item.copyWith(quantity: newQuantity);
+
+  void updateQuantity(String? itemId, int newQuantity) {
+    final updatedItems = state.cartItems.map((item) {
+      if (item.cartId == itemId) {
+        return item.copyWith(quantity: newQuantity);
+      }
+      return item;
+    }).toList();
+
+    emit(state.copyWith(cartItems: updatedItems));
+
+    // 👉 Thêm luôn dòng này sau khi emit
+    calculateTotalPrice(state.selectedItems);
+  }
+
+  List<CartItem> getSelectedCartItems(List<bool> selectedItems) {
+    final selectedCartItems = <CartItem>[];
+    print("🛒 [CartCubit] Đang lấy danh sách sản phẩm đã chọn");
+    for (int i = 0; i < selectedItems.length; i++) {
+      if (selectedItems[i]) {
+        selectedCartItems.add(state.cartItems[i]);
+      }
     }
-    return item;
-  }).toList();
+    print("✅ [CartCubit] Đã lấy danh sách sản phẩm đã chọn thành công");
+    print(selectedCartItems);
 
-  emit(state.copyWith(cartItems: updatedItems));
-
-  // 👉 Thêm luôn dòng này sau khi emit
-  calculateTotalPrice(state.selectedItems);
-}
- 
+    return selectedCartItems;
+  }
 }

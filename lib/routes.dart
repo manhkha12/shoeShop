@@ -25,6 +25,7 @@ import 'package:shoe_store/shared/cubits/product_detail_cubit/product_detail_cub
 import 'package:shoe_store/shared/cubits/review_cubit/review_cubit.dart';
 import 'package:shoe_store/shared/cubits/search_cubit/search_cubit.dart';
 import 'package:shoe_store/shared/cubits/signup_cubit/signup_cubit.dart';
+import 'package:shoe_store/shared/models/cart_item.dart';
 import 'package:shoe_store/shared/models/product.dart';
 
 import 'features/intro/splash_screen.dart';
@@ -65,7 +66,9 @@ RouteFactory onGenerateRoutes() {
     if (settings.name == RouteName.orderScreen) {
       return MaterialPageRoute(
         settings: settings,
-        builder: (context) => const OrderScreen(),
+        builder: (context) =>  OrderScreen(
+          selectedItems: settings.arguments as List<CartItem>,
+        ),
       );
     }
 
