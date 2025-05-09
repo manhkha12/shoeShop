@@ -213,11 +213,15 @@ class $AssetsIconsGen {
   /// File path: assets/icons/tick.svg
   SvgGenImage get tick => const SvgGenImage('assets/icons/tick.svg');
 
+  /// File path: assets/icons/voucher.svg
+  SvgGenImage get voucher => const SvgGenImage('assets/icons/voucher.svg');
+
   /// List of all assets
   List<SvgGenImage> get values => [
         airplane,
         logout,
         alarm,
+        voucher,
         alarmPlay,
         arrowDown,
         tick,

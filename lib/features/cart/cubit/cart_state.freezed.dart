@@ -150,7 +150,7 @@ class _$CartStateImpl implements _CartState {
       this.cartSuccess = false,
       final List<CartItem> cartItems = const [],
       final List<bool> selectedItems = const [],
-      this.totalPrice = 0.0})
+      this.totalPrice = 0})
       : _cartItems = cartItems,
         _selectedItems = selectedItems;
 

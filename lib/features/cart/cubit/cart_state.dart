@@ -10,7 +10,7 @@ class CartState with _$CartState{
     @Default(false) bool cartSuccess,
     @Default([]) List<CartItem> cartItems,
     @Default([]) List<bool> selectedItems,
-    @Default(0.0) double totalPrice,
+    @Default(0) double totalPrice,
    
   }) = _CartState;
 }
