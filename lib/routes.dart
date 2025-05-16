@@ -1,7 +1,4 @@
 import 'package:get_it/get_it.dart';
-import 'package:shoe_store/data/local/app_provider.dart';
-import 'package:shoe_store/data/repository/api_service.dart';
-import 'package:shoe_store/data/repository/repositories.dart';
 import 'package:shoe_store/features/admin_dasbroad_screen.dart';
 import 'package:shoe_store/features/cart/cart_detail.dart';
 import 'package:shoe_store/features/cart/cubit/cart_cubit.dart';
@@ -11,6 +8,7 @@ import 'package:shoe_store/features/intro/story_book.dart';
 import 'package:shoe_store/features/login/login_screen.dart';
 
 import 'package:shoe_store/features/main_screen.dart';
+import 'package:shoe_store/features/order/cubit/order_cubit.dart';
 import 'package:shoe_store/features/order/oder_screen.dart';
 import 'package:shoe_store/features/peoduct_detail/product_detail.dart';
 import 'package:shoe_store/features/search_reasults/search_results.dart';
@@ -66,8 +64,11 @@ RouteFactory onGenerateRoutes() {
     if (settings.name == RouteName.orderScreen) {
       return MaterialPageRoute(
         settings: settings,
-        builder: (context) =>  OrderScreen(
-          selectedItems: settings.arguments as List<CartItem>,
+        builder: (context) =>  BlocProvider(
+          create: (context) => GetIt.I<OrderCubit>(),
+          child: OrderScreen(
+            selectedItems: settings.arguments as List<CartItem>,
+          ),
         ),
       );
     }
@@ -94,6 +95,7 @@ RouteFactory onGenerateRoutes() {
           providers: [
             BlocProvider(create: (_) => GetIt.I<ProductCubit>()),
             BlocProvider(create: (_) => GetIt.I<SearchCubit>()),
+            BlocProvider(create: (_)=>GetIt.I<OrderCubit>()),
             // nếu có thêm cubit nào khác MainScreen cần thì add ở đây
           ],
           child: MainScreen(),
