@@ -2,6 +2,7 @@ import 'package:shoe_store/features/caterogy/caterogy_page_screen.dart';
 
 import 'package:shoe_store/features/home_page/home_page_screen.dart';
 import 'package:shoe_store/features/cart/cart_detail.dart';
+import 'package:shoe_store/features/order/component/order_detail.dart';
 import 'package:shoe_store/features/setting/setting_page_screen.dart';
 import 'package:shoe_store/gen/assets.gen.dart';
 import 'package:shoe_store/shared/extensions/extensions.dart';
@@ -38,7 +39,7 @@ class _MainScreenState extends State<MainScreen> {
         ),
         BottomNavigationItem(
           icon: Assets.icons.shoppingCart.path,
-          page: const CaterogyScreen(),
+          page: const OrderDetail(),
         ),
         BottomNavigationItem(
           icon: Assets.icons.other.path,

@@ -2,11 +2,15 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart';
 import 'package:shoe_store/features/cart/component/show_cart_item.dart';
+import 'package:shoe_store/features/order/cubit/order_cubit.dart';
+import 'package:shoe_store/features/order/cubit/order_state.dart';
 import 'package:shoe_store/gen/assets.gen.dart';
 import 'package:shoe_store/shared/extensions/build_context_extension.dart';
 import 'package:shoe_store/shared/models/cart_item.dart';
+import 'package:shoe_store/shared/models/order_item.dart';
 import 'package:shoe_store/shared/widgets/app_text.dart';
 import 'package:shoe_store/shared/widgets/app_text_icon.dart';
 import 'package:shoe_store/shared/widgets/buttons/app_button.dart';
@@ -21,6 +25,13 @@ class OrderScreen extends StatefulWidget {
 }
 
 class _OrderScreenState extends State<OrderScreen> {
+  late final OrderCubit orderCubit;
+  @override
+  void initState() {
+    orderCubit = context.read<OrderCubit>();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -70,14 +81,22 @@ class _OrderScreenState extends State<OrderScreen> {
                 ),
                 child: ListView.separated(
                   itemBuilder: (context, index) {
+
+                    // co the lam theo huong add vao orderItem model then setOrderItem into cubit
                     final cartItem = widget.selectedItems[index];
-                    for (var i = 0; i < widget.selectedItems.length; i++) {
-                      print("Selected items: ${widget.selectedItems[i].name}");
-                      print("Selected items: ${widget.selectedItems[i].image}");
-                      print("Selected items: ${widget.selectedItems[i].price}");
-                      print(
-                          "Selected items: ${widget.selectedItems[i].quantity}");
-                    }
+                    orderCubit.setProductId(cartItem.productId);
+                    orderCubit.setColor(cartItem.color);
+                    orderCubit.setQuantity(cartItem.quantity ?? 1);
+                    orderCubit.setPrice(cartItem.price);
+                    orderCubit.setSize(cartItem.size);
+
+                    // for (var i = 0; i < widget.selectedItems.length; i++) {
+                    //   print("Selected items: ${widget.selectedItems[i].name}");
+                    //   print("Selected items: ${widget.selectedItems[i].image}");
+                    //   print("Selected items: ${widget.selectedItems[i].price}");
+                    //   print(
+                    //       "Selected items: ${widget.selectedItems[i].quantity}");
+                    // }
                     return ShowOrder(
                       id: cartItem.cartId,
                       imageUrl: cartItem.image ?? "",
@@ -215,7 +234,10 @@ class _OrderScreenState extends State<OrderScreen> {
                             final price =
                                 double.tryParse(element.price ?? '0') ?? 0;
                             final quantity = element.quantity ?? 1;
-                            return previousValue + price * quantity;
+                            final totalPrice = previousValue + price * quantity;
+                            orderCubit.setTotalPrice(totalPrice);
+                            print("Total price: $totalPrice");
+                            return totalPrice;
                           })}',
                           fontSize: 16,
                           fontWeight: FontWeight.w600,
@@ -298,43 +320,78 @@ class _OrderScreenState extends State<OrderScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: Container(
-        color: context.colors.white,
-        height: 70,
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              AppText(
-                'Tổng cộng: ',
-                fontSize: 16,
-                color: context.colors.black,
+      bottomNavigationBar: BlocListener<OrderCubit,OrderState>(
+        listener: (context, state) {
+          if (state.isLoading) {
+            showDialog(
+              context: context,
+              builder: (context) => Center(
+                child: CircularProgressIndicator(),
               ),
-              AppText(
-                'đ${widget.selectedItems.fold(0.0, (previousValue, element) {
-                  final price = double.tryParse(element.price ?? '0') ?? 0;
-                  final quantity = element.quantity ?? 1;
-                  return previousValue + price * quantity;
-                })}',
-                fontSize: 17,
-                fontWeight: FontWeight.w600,
-                color: context.colors.black,
+            );
+          } else if (state.isOrderSuccess) {
+            Navigator.pop(context);
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: Text('Đặt hàng thành công'),
+                content: Text('Cảm ơn bạn đã đặt hàng!'),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: Text('OK'),
+                  ),
+                ],
               ),
-              Container(
-                height: 45,
-                width: context.width * 0.25,
-                child: Material(
-                  elevation: 4,
-                  color: context.colors.onlineColor,
-                  borderRadius: BorderRadius.circular(5),
-                  child: InkWell(
-                    onTap: () {},
-                    child: Center(child: AppText('Mua hàng', fontSize: 16)),
+            );
+          }
+          // else if(state.is)
+        },
+        child: Container(
+          color: context.colors.white,
+          height: 70,
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                AppText(
+                  'Tổng cộng: ',
+                  fontSize: 16,
+                  color: context.colors.black,
+                ),
+                AppText(
+                  'đ${widget.selectedItems.fold(0.0, (previousValue, element) {
+                    final price = double.tryParse(element.price ?? '0') ?? 0;
+                    final quantity = element.quantity ?? 1;
+                    return previousValue + price * quantity;
+                  })}',
+                  fontSize: 17,
+                  fontWeight: FontWeight.w600,
+                  color: context.colors.black,
+                ),
+                Container(
+                  height: 45,
+                  width: context.width * 0.25,
+                  child: Material(
+                    elevation: 4,
+                    color: context.colors.onlineColor,
+                    borderRadius: BorderRadius.circular(5),
+                    child: InkWell(
+                      onTap: () {
+                        orderCubit.createOrder();
+                        
+                         
+                        
+                      },
+                      child: Center(child: AppText('Mua hàng', fontSize: 16)),
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
