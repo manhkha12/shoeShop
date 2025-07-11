@@ -84,13 +84,7 @@ class _OrderScreenState extends State<OrderScreen> {
 
                     // co the lam theo huong add vao orderItem model then setOrderItem into cubit
                     final cartItem = widget.selectedItems[index];
-                    for (var i = 0; i < widget.selectedItems.length; i++) {
-                      print("Selected items: ${widget.selectedItems[i].name}");
-                      print("Selected items: ${widget.selectedItems[i].image}");
-                      print("Selected items: ${widget.selectedItems[i].price}");
-                      print(
-                          "Selected items: ${widget.selectedItems[i].quantity}");
-                    }
+                    
                     return ShowOrder(
                       id: cartItem.cartId,
                       imageUrl: cartItem.image ?? "",
