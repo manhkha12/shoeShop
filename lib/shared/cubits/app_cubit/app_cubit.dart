@@ -14,36 +14,33 @@ class AppCubit extends Cubit<AppState> {
     required this.authRepository,
   }) : super(AppState.checking());
 
- Future<void> checkAuthState() async {
-  print('[AppCubit] 🔍 Bắt đầu kiểm tra trạng thái đăng nhập');
-  try {
-    if (!authRepository.hasAccessToken) {
-      print('[AppCubit] ❌ Không có access token, chuyển về intro screen');
-      await Future.delayed(const Duration(seconds: splashDuration));
-      unauthorized();
-      return;
-    }
-
-    final res = await Future.wait([
-      authRepository.authToken(),
-      Future.delayed(const Duration(seconds: splashDuration))
-    ]);
-
-    for (var e in res) {
-      if (e is User) {
-        print('[AppCubit] ✅ Token hợp lệ, chuyển vào màn chính');
-        authorized(e);
+  Future<void> checkAuthState() async {
+    try {
+      if (!authRepository.hasAccessToken) {
+        await Future.delayed(const Duration(seconds: splashDuration));
+        unauthorized();
         return;
       }
+
+      final res = await Future.wait([
+        authRepository.authToken(),
+        Future.delayed(const Duration(seconds: splashDuration))
+      ]);
+
+      for (var e in res) {
+        if (e is User) {
+          authorized(e);
+          return;
+        }
+      }
+
+      unauthorized();
+    } catch (e) {
+      await Future.delayed(const Duration(seconds: splashDuration));
+      unauthorized();
     }
-    print('[AppCubit] ❌ Token không hợp lệ');
-    unauthorized();
-  } catch (e) {
-    print('[AppCubit] ❌ Lỗi khi kiểm tra token: $e');
-    await Future.delayed(const Duration(seconds: splashDuration));
-    unauthorized();
   }
-}
+
   void authorized(User user) {
     emit(AppState.authorized(user: user));
   }

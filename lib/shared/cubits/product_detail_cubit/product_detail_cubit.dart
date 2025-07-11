@@ -4,28 +4,19 @@ import 'package:shoe_store/shared/cubits/product_detail_cubit/product_detail_sta
 
 class ProductDetailCubit extends Cubit<ProductDetailState> {
   ProductDetailRepository productDetailRepository;
-  ProductDetailCubit({required this.productDetailRepository}) : super(ProductDetailState());
+  ProductDetailCubit({required this.productDetailRepository})
+      : super(ProductDetailState());
 
+  Future<void> loadProductDetail(String productId) async {
+    emit(state.copyWith(isLoading: true, isSuccess: false));
+    final productDetail =
+        await productDetailRepository.getProductDetail(productId);
 
-  Future<void> loadProductDetail(String productId)async{
-    print("📢 [ProductDetailCubit] - Bắt đầu tải danh sách sản phẩm...");
-    emit(state.copyWith(isLoading: true,isSuccess: false));
-    final productDetail = await productDetailRepository.getProductDetail(productId);
-
-    if(productDetail.isNotEmpty){
-      // final detail = productDetail.first;
-    // print("✅ [ProductDetailCubit] - Đã parse thành model:");
-   
-    // print("  🔹 Category name: ${detail.category?.name}");
-    // print("  🔹 Category description: ${detail.category?.description}");
-    // print("  🔹 Variant count: ${detail.variants.length}");
-    // for (var variant in detail.variants) {
-    //   print("    ➜ Variant: size=${variant.size}, color=${variant.color}, stock=${variant.stock}");
-    // }
-      emit(state.copyWith(isLoading: false, productDetail: productDetail,isSuccess: true));
-  }else {
-      print("❌ [ProductDetailCubit] - Không có sản phẩm nào để hiển thị.");
+    if (productDetail.isNotEmpty) {
+      emit(state.copyWith(
+          isLoading: false, productDetail: productDetail, isSuccess: true));
+    } else {
       emit(state.copyWith(isLoading: false, productDetail: []));
-  }
+    }
   }
 }

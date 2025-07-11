@@ -32,7 +32,7 @@ class _HomePageFooterState extends State<HomePageFooter> {
   @override
   void initState() {
     super.initState();
-    print("📢 [HomePageFooter] - Gọi loadProducts()...");
+    
     context.read<ProductCubit>().loadProducts();
     _pageController.addListener(() {
       setState(() {
@@ -97,8 +97,7 @@ class _HomePageFooterState extends State<HomePageFooter> {
                     );
                   } else if (state.searchResults.isNotEmpty) {
                     // Xử lý kết quả tìm kiếm nếu có
-                    print(
-                        "🔍 [SearchCubit] - Kết quả tìm kiếm: ${state.searchResults}");
+                   
                     Navigator.pushNamed(context, RouteName.searchResults,
                         arguments: state.searchResults);
                   }
@@ -109,8 +108,7 @@ class _HomePageFooterState extends State<HomePageFooter> {
                     onTap: () {
                       final keyWord = _searchController.text.trim();
                       context.read<SearchCubit>().searchProducts(keyWord);
-                      print(
-                          "🔍 [HomePageFooter] - Tìm kiếm với từ khóa: $keyWord");
+                   
                     },
                     child: BoxIcon(
                         icon: Assets.icons.filter

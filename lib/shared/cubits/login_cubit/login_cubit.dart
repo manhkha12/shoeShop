@@ -17,35 +17,29 @@ class LoginCubit extends Cubit<LoginState> {
     emit(state.copyWith(password: password));
   }
 
-  // 🔥 Đăng nhập
+  //  Đăng nhập
   Future<void> login() async {
-  if (!state.valid) {
-    print('[LoginCubit] ❌ Email hoặc mật khẩu không hợp lệ');
-    return;
+    if (!state.valid) {
+      return;
+    }
+
+    emit(state.copyWith(isLoading: true));
+
+    try {
+      final user = await userRepository.login(state.email, state.password);
+
+      appCubit.authorized(user);
+      emit(state.copyWith(
+        loginSuccess: true,
+        isLoading: false,
+        user: user,
+        userRole: user.role,
+      ));
+    } catch (e) {
+      emit(state.copyWith(
+        errorMessage: e.toString(),
+        isLoading: false,
+      ));
+    }
   }
-
-  emit(state.copyWith(isLoading: true));
-  print('[LoginCubit] 🔄 Đang đăng nhập với email: ${state.email}');
-
-  try {
-    final user = await userRepository.login(state.email, state.password);
-    print('[LoginCubit] ✅ Đăng nhập thành công: ${user.email} (${user.role})');
-
-    appCubit.authorized(user);
-    emit(state.copyWith(
-      loginSuccess: true,
-      isLoading: false,
-      user: user,
-      userRole: user.role,
-    ));
-  } catch (e) {
-    print('[LoginCubit] ❌ Đăng nhập thất bại: $e');
-    emit(state.copyWith(
-      errorMessage: e.toString(),
-      isLoading: false,
-    ));
-  }
-}
-
-  // 🔥 Đăng ký
 }

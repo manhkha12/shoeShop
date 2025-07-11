@@ -6,23 +6,15 @@ class ApiService {
 
   Future<Map<String, dynamic>?> postRequest(
       String endpoint, Map<String, dynamic> body) async {
-    print('[ApiService] 🔄 Đang gửi yêu cầu POST đến endpoint: $endpoint');
-    print('[ApiService] 📤 Dữ liệu gửi đi: $body');
-    print('[ApiService] 🌍 Base URL: $baseUrl'); // Kiểm tra giá trị của baseUrl
-
     try {
       final response = await http.post(
-        Uri.parse("$baseUrl/$endpoint"), // Gọi API với đúng endpoint
+        Uri.parse("$baseUrl/$endpoint"),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(body),
       );
 
       if (response.statusCode == 200) {
-        print('[ApiService] ✅ Đáp ứng thành công từ server: ${response.body}');
-        return jsonDecode(response.body);
       } else {
-        print(
-            '[ApiService] ❌ Lỗi khi gửi yêu cầu, mã trạng thái: ${response.statusCode}');
         return null;
       }
     } catch (e) {
@@ -34,9 +26,6 @@ class ApiService {
   Future<List<Map<String, dynamic>>?> getProducts() async {
     try {
       final response = await http.get(Uri.parse("$baseUrl/products"));
-      // print(
-      //     "🛠 [API Service] - Kết nối API, mã trạng thái: ${response.statusCode}");
-      // print("📩 [API Service] - Dữ liệu trả về: ${response.body}");
 
       if (response.statusCode == 200) {
         Map<String, dynamic> jsonResponse = jsonDecode(response.body);
@@ -62,9 +51,6 @@ class ApiService {
     try {
       final response =
           await http.get(Uri.parse("$baseUrl/products/$productId"));
-      print(
-          "🛠 [API Service] - Kết nối API, mã trạng thái: ${response.statusCode}");
-      print("📩 [API Service] - Dữ liệu trả về: ${response.body}");
 
       if (response.statusCode == 200) {
         Map<String, dynamic> jsonResponse = jsonDecode(response.body);
@@ -88,9 +74,6 @@ class ApiService {
     try {
       final response =
           await http.get(Uri.parse("$baseUrl/products/search?query=$query"));
-      // print(
-      //     "🛠 [API Service] - Kết nối API, mã trạng thái: ${response.statusCode}");
-      // print("📩 [API Service] - Dữ liệu trả về: ${response.body}");
 
       if (response.statusCode == 200) {
         Map<String, dynamic> jsonResponse = jsonDecode(response.body);
@@ -121,10 +104,6 @@ class ApiService {
         },
       );
 
-      // print(
-      //     "🔐 [API Service] - Kiểm tra token, mã trạng thái: ${response.statusCode}");
-      // print("📩 [API Service] - Dữ liệu trả về: ${response.body}");
-
       if (response.statusCode == 200) {
         return jsonDecode(response.body);
       } else {
@@ -140,9 +119,6 @@ class ApiService {
     try {
       final response =
           await http.get(Uri.parse("$baseUrl/review/product/$productId"));
-      // print(
-      //     "🛠 [API Service] - Kết nối API, mã trạng thái: ${response.statusCode}");
-      // print("📩 [API Service] - Dữ liệu trả về: ${response.body}");
 
       if (response.statusCode == 200) {
         Map<String, dynamic> jsonResponse = jsonDecode(response.body);
@@ -179,10 +155,6 @@ class ApiService {
         body: jsonEncode(review),
       );
 
-      // print(
-      //     "🛠 [API Service] - Kết nối API, mã trạng thái: ${response.statusCode}");
-      // print("📩 [API Service] - Dữ liệu trả về: ${response.body}");
-
       if (response.statusCode == 200) {
         return jsonDecode(response.body);
       }
@@ -196,7 +168,6 @@ class ApiService {
 
   Future<Map<String, dynamic>?> addToCart(Map<String, dynamic> params) async {
     try {
-      print("🌐 [ApiService] Gửi POST $baseUrl/cart với body: $params");
       final response = await http.post(
         Uri.parse("$baseUrl/cart"),
         headers: {
@@ -204,8 +175,7 @@ class ApiService {
         },
         body: jsonEncode(params),
       );
-      print(
-          "📨 [ApiService] Response: ${response.statusCode} - ${response.body}");
+
       if (response.statusCode == 200) {
         return jsonDecode(response.body);
       }
@@ -236,8 +206,7 @@ class ApiService {
     }
   }
 
-  Future<void> updateCartItem(
-      String? cartId, int quan) async {
+  Future<void> updateCartItem(String? cartId, int quan) async {
     try {
       final response = await http.put(
         Uri.parse("$baseUrl/cart/$cartId"),
@@ -260,15 +229,12 @@ class ApiService {
   }
 
   Future<List<Map<String, dynamic>>?> getCart(String? userId) async {
-    print(
-        "🛒 [ApiService] Gửi request đến API để lấy giỏ hàng cho userId: $userId");
     try {
       final response = await http.get(Uri.parse("$baseUrl/cart/$userId"));
       if (response.statusCode == 200) {
         Map<String, dynamic> jsonResponse = jsonDecode(response.body);
         List<dynamic> data = jsonResponse["data"]["results"];
-        print(
-            "✅ [ApiService] Nhận được ${data.length} sản phẩm trong giỏ hàng");
+
         return data
             .map((cartItem) => {
                   "cart_id": cartItem["cart_id"].toString(),

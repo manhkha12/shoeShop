@@ -6,16 +6,16 @@ class ProductDetailRepository {
   ApiService apiService;
   ProductDetailRepository({required this.apiService});
 
-Future<List<Detail>> getProductDetail(String productId) async {
-  print("🔄 [ProductDetailRepository] - Đang lấy danh sách sản phẩm...");
-  final response = await apiService.getProductDetail(productId);
+  Future<List<Detail>> getProductDetail(String productId) async {
+    final response = await apiService.getProductDetail(productId);
 
-  if (response != null) {
-   final productDetail=  response.map((data) => Detail.fromJson(data)).toList();
-   print("✅ [ProductRepository] - Lấy thành công ${productDetail.length} sản phẩm.");
-    return productDetail;
- }
-    print("❌ [ProductRepository] - Không lấy được sản phẩm nào!");
-  return [];
-}
+    if (response != null) {
+      final productDetail =
+          response.map((data) => Detail.fromJson(data)).toList();
+
+      return productDetail;
+    }
+
+    return [];
+  }
 }

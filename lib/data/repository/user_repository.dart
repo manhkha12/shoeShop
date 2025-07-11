@@ -12,8 +12,6 @@ class UserRepository {
   UserRepository(this.apiService, this.appProvider);
 
   Future<User> login(String email, String password) async {
-    // print('[AuthService] 🔄 Đang thực hiện đăng nhập với email: $email');
-
     try {
       final resp = await apiService.postRequest("auth/login", {
         "email": email,
@@ -21,12 +19,8 @@ class UserRepository {
       });
 
       if (resp != null && resp['data'] != null) {
-        print(
-            '[AuthService] ✅ Đăng nhập thành công. Nhận dữ liệu: ${resp['data']}');
-
         // Cập nhật token
         await updateToken(resp['data']);
-        print('[AuthService] ✅ Token đã được cập nhật thành công.');
 
         // Trả về user, kiểm tra null trước khi truy cập
         final user = User.fromJson(resp['data']['user'] ?? {});
@@ -37,12 +31,9 @@ class UserRepository {
         await prefs.setInt('user_id', user.id);
         return user;
       } else {
-        // print(
-        //     '[AuthService] ❌ Đăng nhập thất bại: Không có phản hồi từ server');
         throw Exception("Đăng nhập thất bại");
       }
     } catch (e) {
-      // print('[AuthService] ❌ Lỗi khi đăng nhập: $e');
       throw Exception("Đăng nhập thất bại: $e");
     }
   }
@@ -63,16 +54,14 @@ class UserRepository {
     }
   }
 
-Future<User> authToken() async {
-  // print('[UserRepo] 🔐 Đang xác thực lại bằng refresh token: ${refreshToken}');
-  final resp = await apiService.authToken(refreshToken!);
-  await updateToken(resp!['data']);
-  // print('[UserRepo] ✅ Refresh token hợp lệ. Đăng nhập lại thành công');
-  return User.fromJson(resp['data']['user']);
-}
+  Future<User> authToken() async {
+    final resp = await apiService.authToken(refreshToken!);
+    await updateToken(resp!['data']);
+
+    return User.fromJson(resp['data']['user']);
+  }
 
   Future<void> logout() async {
-
     await appProvider.setAccessToken(null);
     await appProvider.setRefreshToken(null);
   }
@@ -83,7 +72,6 @@ Future<User> authToken() async {
     if (response.containsKey('refreshToken')) {
       await appProvider.setRefreshToken(response['refreshToken']);
     }
-
   }
 
   bool get hasAccessToken => appProvider.hasAccessToken;
