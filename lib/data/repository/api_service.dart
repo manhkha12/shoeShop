@@ -258,4 +258,65 @@ class ApiService {
       return null;
     }
   }
+
+Future<List<Map<String, dynamic>>?> getUserOrders(String? userId) async {
+   // Thay URL thật của bạn
+
+  try {
+    final response = await http.get(Uri.parse("$baseUrl/order/user/$userId"));
+
+    if (response.statusCode == 200) {
+      final jsonResponse = jsonDecode(response.body);
+         print("🟢 [ApiService] JSON Response: $jsonResponse");
+      if (jsonResponse['success'] == true) {
+        List<dynamic> orders = jsonResponse['data']['orders'];
+         print("🟢 [ApiService] Lấy được ${orders.length} orders");
+        // Trả về list map orders (đã có items bên trong)
+        // In từng order
+        for (var order in orders) {
+          print("Order ID: ${order['order_id']}, Total: ${order['total_price']}");
+          print("Items: ${order['items']}");
+        }
+        
+        return orders.cast<Map<String, dynamic>>();
+      } else {
+        print('API trả về lỗi hoặc không thành công');
+        return null;
+      }
+    } else {
+      print('Lỗi HTTP: ${response.statusCode}');
+      return null;
+    }
+  } catch (e) {
+    print('Lỗi gọi API: $e');
+    return null;
+  }
+}
+
+
+  Future<Map<String, dynamic>?> createOrder(Map<String, dynamic> params,String? accessToken) async {
+    try {
+      print("🌐 [ApiService] Gửi POST $baseUrl/order với body: $params");
+      final response = await http.post(
+        Uri.parse("$baseUrl/order"),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $accessToken',
+        },
+        body: jsonEncode(params),
+      );
+
+      if (response.statusCode == 201) {
+        Map<String, dynamic> jsonResponse = jsonDecode(response.body);
+        print("✅ [ApiService] Đơn hàng đã được tạo: $jsonResponse");
+        return jsonResponse; // chứa: { message, orderId }
+      } else {
+        print("❌ [ApiService] Lỗi từ API với status: ${response.statusCode}");
+        return null;
+      }
+    } catch (e) {
+      print("🚨 [ApiService] Lỗi khi gọi API tạo đơn hàng: $e");
+      return null;
+    }
+  }
 }
